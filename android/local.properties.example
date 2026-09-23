@@ -1,0 +1,11 @@
+# Copy to local.properties (git-ignored) and point this at your Android SDK.
+# Android Studio fills this in automatically; only edit by hand for command-line builds.
+sdk.dir=/path/to/Android/sdk
+
+# Map/search provider configuration (see docs/map-provider.md). None of these
+# are required for the default OpenStreetMap raster + Nominatim setup.
+GEOALARM_TILE_URL_TEMPLATE=https://tile.openstreetmap.org/{z}/{x}/{y}.png
+GEOALARM_TILE_ATTRIBUTION=(c) OpenStreetMap contributors
+GEOALARM_GEOCODER_BASE_URL=https://nominatim.openstreetmap.org
+# Contact address required by Nominatim's usage policy (put your own app/contact info):
+GEOALARM_GEOCODER_USER_AGENT=GeoAlarm/1.0 (contact: you@example.com)

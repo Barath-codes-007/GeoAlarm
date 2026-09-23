@@ -1,0 +1,17 @@
+{
+  "releaseDate": "2026-09-21",
+  "minimumAndroidVersion": "8.0",
+  "minSdk": 26,
+  "releaseNotes": [
+    "First public foundation release.",
+    "Location-based destination alarms with warning distance and arrival radius.",
+    "Foreground-service monitoring with adaptive location frequency.",
+    "OpenStreetMap-compatible map (MapLibre) behind a swappable provider interface.",
+    "Local-first: alarms, places and history stay on the device."
+  ],
+  "buildType": "debug",
+  "knownLimitations": [
+    "Debug APKs are not production-signed releases.",
+    "Background execution can be restricted by some device manufacturers; see docs/testing.md and the README."
+  ]
+}

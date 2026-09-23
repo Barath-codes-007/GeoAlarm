@@ -1,0 +1,71 @@
+name: Website deploy
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "web/**"
+      - "VERSION"
+      - "release-metadata.json"
+      - ".github/workflows/website-deploy.yml"
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Generate web/version.json from VERSION
+        run: python scripts/sync_version.py
+
+      - name: Inject public config from repository variables
+        # Nothing secret: these are GitHub *variables* (Settings > Secrets and variables >
+        # Actions > Variables), not secrets, and the result is a public file served as-is.
+        env:
+          API_BASE_URL: ${{ vars.GEOALARM_API_BASE_URL }}
+          APK_URL: ${{ vars.GEOALARM_APK_URL }}
+          REPO_URL: ${{ vars.GEOALARM_REPO_URL || format('https://github.com/{0}', github.repository) }}
+          CONTACT_EMAIL: ${{ vars.GEOALARM_CONTACT_EMAIL }}
+        run: |
+          cat > web/js/config.js <<EOF
+          window.GEOALARM_CONFIG = {
+            apiBaseUrl: "${API_BASE_URL}",
+            apkUrl: "${APK_URL}",
+            repoUrl: "${REPO_URL}",
+            contactEmail: "${CONTACT_EMAIL}"
+          };
+          EOF
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

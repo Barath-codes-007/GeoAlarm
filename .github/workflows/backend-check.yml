@@ -1,0 +1,38 @@
+name: Backend check
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "VERSION"
+      - "release-metadata.json"
+      - ".github/workflows/backend-check.yml"
+  pull_request:
+    paths:
+      - "backend/**"
+      - "VERSION"
+  workflow_dispatch: {}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+          cache-dependency-path: backend/requirements-dev.txt
+
+      - name: Install dependencies
+        run: pip install -r backend/requirements-dev.txt
+
+      - name: Check VERSION / CHANGELOG consistency
+        run: python scripts/sync_version.py --check
+
+      - name: Run tests
+        working-directory: backend
+        run: python -m pytest -v

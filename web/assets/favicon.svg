@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="GeoAlarm logo">
+  <rect width="64" height="64" rx="15" fill="#3A45D6"/>
+  <ellipse cx="32" cy="51" rx="15" ry="5" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2"/>
+  <ellipse cx="32" cy="51" rx="24" ry="8" fill="none" stroke="#fff" stroke-opacity=".28" stroke-width="2"/>
+  <path d="M20 35A15 15 0 1 1 44 35L32 51Z" fill="#fff"/>
+  <circle cx="32" cy="26" r="6" fill="#3A45D6"/>
+</svg>
