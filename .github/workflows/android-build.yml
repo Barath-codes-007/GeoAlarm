@@ -30,8 +30,14 @@ jobs:
 
       - name: Ensure required Android SDK packages
         run: |
-          yes | sdkmanager --licenses > /dev/null 2>&1 || true
-          sdkmanager --install "platform-tools" "platforms;android-35" "build-tools;35.0.0" > /dev/null
+          SDKMANAGER=$(find "${ANDROID_HOME:-/usr/local/lib/android/sdk}" /usr/local/lib/android -name "sdkmanager" -type f 2>/dev/null | head -n1)
+          if [ -z "$SDKMANAGER" ]; then
+            echo "::error::Could not locate sdkmanager anywhere under the Android SDK on this runner."
+            exit 1
+          fi
+          echo "Using sdkmanager at: $SDKMANAGER"
+          yes | "$SDKMANAGER" --licenses > /dev/null 2>&1 || true
+          "$SDKMANAGER" --install "platform-tools" "platforms;android-35" "build-tools;35.0.0" > /dev/null
 
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
