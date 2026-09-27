@@ -1,0 +1,42 @@
+# ---- Secrets (never commit) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.jks
+*.keystore
+keystore.properties
+local.properties
+google-services.json
+secrets.properties
+
+# ---- Android / Gradle ----
+android/.gradle/
+android/build/
+android/app/build/
+android/captures/
+android/.externalNativeBuild/
+android/.cxx/
+*.apk
+*.aab
+*.iml
+.idea/
+.DS_Store
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.coverage
+htmlcov/
+
+# ---- Node / tooling ----
+node_modules/
+
+# ---- Generated ----
+web/version.json
+dist/
+*.log

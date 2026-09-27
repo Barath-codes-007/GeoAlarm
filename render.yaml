@@ -1,0 +1,27 @@
+# Render Blueprint for the GeoAlarm backend.
+# No secrets live here: values marked `sync: false` are entered in the Render dashboard.
+services:
+  - type: web
+    name: geoalarm-api
+    runtime: python
+    plan: free
+    region: oregon
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: uvicorn app.main:app --app-dir backend --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    autoDeploy: true
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+      - key: GEOALARM_ENV
+        value: production
+      - key: GEOALARM_LOG_LEVEL
+        value: INFO
+      # Exact origin of the website, e.g. https://YOUR-USER.github.io  (no path, no trailing slash)
+      - key: GEOALARM_CORS_ORIGINS
+        sync: false
+      # HTTPS URL of the APK asset on your GitHub Release (optional until you publish one)
+      - key: GEOALARM_APK_URL
+        sync: false
+      - key: GEOALARM_APK_SHA256
+        sync: false
